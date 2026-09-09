@@ -1,0 +1,57 @@
+<aside class="side">
+  {% set bio = get_page(path="bio/index.md") %}
+  <div class="card"><div class="card-bd" style="padding:16px">
+    <h3>Quién es quién</h3>
+    <div class="bio">
+      <div class="avatar">P</div>
+      <div>
+        <a href="/bio/" style="font-weight:600">{{ bio.description | default(value="DJ Pulsar") }}</a>
+        <p>{{ bio.description | default("") }}</p>
+      </div>
+    </div>
+  </div></div>
+
+  {% if pulso %}
+  <div class="card"><div class="card-bd" style="padding:16px">
+    <h3>Info del podcast</h3>
+    <div class="kv">
+      {% if pulso.author %}<span class="k">CREADOR</span><span class="v">{{ pulso.author }}</span>{% endif %}
+      {% if pulso.language %}<span class="k">IDIOMA</span><span class="v">{{ pulso.language }}</span>{% endif %}
+      {% if pulso.license %}<span class="k">LICENCIA</span><span class="v">{{ pulso.license }}</span>{% endif %}
+      {% if pulso.frequency %}<span class="k">FREC.</span><span class="v">{{ pulso.frequency }}</span>{% endif %}
+      {% if pulso.format %}<span class="k">FORMATO</span><span class="v">{{ pulso.format }}</span>{% endif %}
+    </div>
+    {% if pulso.is_podcast %}
+    <div style="margin-top:12px">
+      <a class="chip" href="{{ pulso.permalink | safe }}feed.xml">RSS <b>↗</b></a>
+    </div>
+    {% endif %}
+  </div></div>
+  {% endif %}
+
+  <div class="card"><div class="card-bd" style="padding:16px">
+    <h3>Novedades</h3>
+    <ul class="news">
+      {% set n = 0 %}
+      {% for news in get_section(path="novedades").pages | sort(attribute="date", reverse=true) %}
+      {% if n < 4 %}
+      <li>
+        <span class="d">{{ news.date | date(format="%Y-%m-%d") }}</span>
+        <a href="{{ news.permalink | safe }}"><div class="t">{{ news.title }}</div></a>
+        <p>{{ news.description | default("") }}</p>
+      </li>
+      {% set n = n + 1 %}
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </div></div>
+
+  <div class="card"><div class="card-bd" style="padding:16px">
+    <h3>Enlaces externos</h3>
+    <ul class="links">
+      {% for l in site_config.extra.links | default(value=[]) %}
+      <li><a href="{{ l.url }}" target="_blank" rel="noopener">{{ l.label }}</a> <span class="d">{{ l.desc | default(value="") }}</span></li>
+      {% endfor %}
+    </ul>
+  </div></div>
+</aside>
