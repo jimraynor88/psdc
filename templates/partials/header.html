@@ -10,7 +10,8 @@
           <a href="{{ s.permalink }}" class="{% if pulso is defined and pulso.path == s.path %}on{% endif %}">{{ s.title }}</a>
         {% endif %}
       {% endfor %}
-     <a href="/novedades/" class="{% if section is defined and section.path == "novedades/" %}on{% endif %}">Novedades</a>      <a href="/bio/" class="{% if section is defined and section.path | containing("bio") %}on{% endif %}">Bio</a>
+      <a href="/novedades/" class="{% if section is defined and section.path == "novedades/" %}on{% endif %}">Novedades</a>
+      <a href="/bio/" class="{% if section is defined and section.path | containing("bio") %}on{% endif %}">Bio</a>
     </nav>
     <div class="eq"><i></i><i></i><i></i><i></i></div>
   </div>
