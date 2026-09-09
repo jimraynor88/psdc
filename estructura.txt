@@ -1,4 +1,4 @@
-pulso-archivo/
+HIGH-FREQUENCY/
 ├── config.toml
 ├── .github/workflows/deploy.yml
 ├── content/
