@@ -90,14 +90,14 @@
           {{ page.content }}
           {% if page.extra.chapters %}
           <h3>Marcas del audio</h3>
-<ul class="chap" id="chapters">
-  {% for c in page.extra.chapters %}
-  {% set mmss = c.time | replace(":", "_") %}
-  {% set parts = mmss | split("_") %}
-  {% set secs = (parts[0] | int) * 60 + (parts[1] | int) %}
-  <li data-t="{{ secs }}"><span class="t">{{ c.time }}</span><span class="l">{{ c.label }}</span></li>
-  {% endfor %}
-</ul>
+            <ul class="chap" id="chapters">
+              {% for c in page.extra.chapters %}
+              {% set mmss = c.time | replace(from=":", to="_") %}
+              {% set parts = mmss | split(pat="_") %}
+              {% set secs = (parts[0] | int) * 60 + (parts[1] | int) %}
+               <li data-t="{{ secs }}"><span class="t">{{ c.time }}</span><span class="l">{{ c.label }}</span></li>
+             {% endfor %}
+            </ul>
           {% endif %}
         </div>
       </div>
