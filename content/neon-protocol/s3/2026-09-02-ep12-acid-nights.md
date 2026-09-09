@@ -5,7 +5,7 @@ season: 3
 episode: 12
 date: 2026-09-02
 original_date: "1999"
-author: "DJ Pulsar"
+author: DJ-DuRaN
 duration: "41:07"
 bpm: 138
 genre: "Acid / Techno"
