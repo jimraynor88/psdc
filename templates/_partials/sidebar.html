@@ -1,31 +1,29 @@
 <aside class="side">
-  {% set bio = get_page(path="bio/index.md") %}
+  {% set bio = get_section(path="bio/_index.md") %}
   <div class="card"><div class="card-bd" style="padding:16px">
     <h3>Quién es quién</h3>
     <div class="bio">
       <div class="avatar">P</div>
       <div>
-        <a href="/bio/" style="font-weight:600">{{ bio.description | default(value="DJ Pulsar") }}</a>
-        <p>{{ bio.description | default("") }}</p>
+        <a href="/bio/" style="font-weight:600">{{ bio.extra.name | default(value="DJ-DuRaN") }}</a>
+        <p>{{ bio.description | default(value="") }}</p>
       </div>
     </div>
   </div></div>
 
-  {% if pulso %}
+  {% if pulso is defined %}
   <div class="card"><div class="card-bd" style="padding:16px">
     <h3>Info del podcast</h3>
     <div class="kv">
-      {% if pulso.author %}<span class="k">CREADOR</span><span class="v">{{ pulso.author }}</span>{% endif %}
-      {% if pulso.language %}<span class="k">IDIOMA</span><span class="v">{{ pulso.language }}</span>{% endif %}
-      {% if pulso.license %}<span class="k">LICENCIA</span><span class="v">{{ pulso.license }}</span>{% endif %}
-      {% if pulso.frequency %}<span class="k">FREC.</span><span class="v">{{ pulso.frequency }}</span>{% endif %}
-      {% if pulso.format %}<span class="k">FORMATO</span><span class="v">{{ pulso.format }}</span>{% endif %}
+      {% if pulso.extra.author %}<span class="k">CREADOR</span><span class="v">{{ pulso.extra.author }}</span>{% endif %}
+      {% if pulso.extra.language %}<span class="k">IDIOMA</span><span class="v">{{ pulso.extra.language }}</span>{% endif %}
+      {% if pulso.extra.license %}<span class="k">LICENCIA</span><span class="v">{{ pulso.extra.license }}</span>{% endif %}
+      {% if pulso.extra.frequency %}<span class="k">FREC.</span><span class="v">{{ pulso.extra.frequency }}</span>{% endif %}
+      {% if pulso.extra.format %}<span class="k">FORMATO</span><span class="v">{{ pulso.extra.format }}</span>{% endif %}
     </div>
-    {% if pulso.is_podcast %}
     <div style="margin-top:12px">
-      <a class="chip" href="{{ pulso.permalink | safe }}feed.xml">RSS <b>↗</b></a>
+      {% if pulso.extra.is_podcast %}<a class="chip" href="{{ pulso.permalink }}feed.xml">RSS <b>↗</b></a>{% endif %}
     </div>
-    {% endif %}
   </div></div>
   {% endif %}
 
@@ -33,15 +31,15 @@
     <h3>Novedades</h3>
     <ul class="news">
       {% set n = 0 %}
-      {% for news in get_section(path="novedades").pages | sort(attribute="date", reverse=true) %}
-      {% if n < 4 %}
-      <li>
-        <span class="d">{{ news.date | date(format="%Y-%m-%d") }}</span>
-        <a href="{{ news.permalink | safe }}"><div class="t">{{ news.title }}</div></a>
-        <p>{{ news.description | default("") }}</p>
-      </li>
-      {% set n = n + 1 %}
-      {% endif %}
+      {% set nov = get_section(path="novedades/_index.md") %}
+      {% for news in nov.pages %}
+        {% if n < 4 %}
+        <li>
+          <span class="d">{{ news.date | date(format="%Y-%m-%d") }}</span>
+          <a href="{{ news.permalink }}"><div class="t">{{ news.title }}</div></a>
+          <p>{{ news.description | default(value="") }}</p>
+        </li>
+        {% set n = n + 1 %}{% endif %}
       {% endfor %}
     </ul>
   </div></div>
