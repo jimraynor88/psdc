@@ -11,6 +11,6 @@ language: "es"
 license: "CC BY-NC 4.0"
 frequency: "irregular"
 format: "mp3"
-categories: ["Music"]
+categories: "Music"
 generate_feeds: true
 ---
