@@ -13,6 +13,7 @@ author: DJ-DuRaN
 language: es
 license: CC BY-NC 4.0
 frequency: irregular
+categories: Music
 format: mp3
 boilerplate: **Golden age edition.** Solo material de la época, sin remezclas modernas.
 generate_feeds: true
