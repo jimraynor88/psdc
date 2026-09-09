@@ -1,0 +1,17 @@
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="/"><span>PULSO<b>▮</b>ARCHIVO</span><span class="cur">_</span></a>
+    <nav>
+      {% set page_pulso = (page.ancestors | first) if (page is defined and page.ancestors | length > 0) else none %}
+      <a href="/" {% if page is not defined and section.path == "" %}class="on"{% endif %}>Inicio</a>
+      {% for s in get_sections() | filter(attribute="is_podcast") | sort(attribute="weight") %}
+        <a href="{{ s.permalink | safe }}" {% if page_pulso and page_pulso.path == s.path %}class="on"{% endif %}>{{ s.title }}</a>
+      {% endfor %}
+      {% set on_news = (page is defined and (page.path | split("/"))[0] == "novedades") or (page is not defined and section.path == "novedades") %}
+      <a href="/novedades/" {% if on_news %}class="on"{% endif %}>Novedades</a>
+      <a href="/bio/" {% if page is defined and page.path == "bio/index.md" %}class="on"{% endif %}>Bio</a>
+    </nav>
+    <div class="eq" title="sonando"><i></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="spectrum"></div>
+</header>
