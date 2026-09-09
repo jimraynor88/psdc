@@ -15,3 +15,13 @@ HIGH-FREQUENCY/
 └── static/
     ├── css/style.css
     └── js/main.js
+
+
+templates/
+  index.html  section.html  single.html  feed.xml  404.html
+  partials/          ← antes _partials (sin guion bajo)
+    header.html  switch.html  sidebar.html  footer.html  player.html
+  shortcodes/        ← antes _shortcodes
+    callout.html
+content/
+  bio/_index.md      ← antes bio/index.md  (debe ser una SECCIÓN, no un page)
