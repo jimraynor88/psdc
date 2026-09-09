@@ -1,0 +1,32 @@
+title = "PULSO ARCHIVO"
+description = "Archivo y difusión de techno, trance, eurodance y hard-house de finales de los 90 y los 2000. Ediciones originales, promos y rarezas, restauradas."
+language = "es"
+default_timezone = "Europe/Madrid"
+# IMPORTANTE: cámbialo por tu dominio real (al principio: https://pulso-archivo.pages.dev)
+url = "https://pulso-archivo.pages.dev"
+
+[output]
+dir = "public"
+
+[outputs]
+default = ["html", "rss"]
+page = ["html"]
+
+[compilers.minify]
+minify_html = true
+
+[extra]
+tagline = "dance music · archivo · difusión"
+# tus velocidades exactas (strings para que "1.10" no se convierta en "1.1")
+speeds = ["0.88", "1", "1.10", "1.15", "1.19", "1.28", "1.55", "1.82", "2.18", "2.81"]
+
+# Comentarios (giscus). Descomenta y rellena si quieres habilitarlos:
+# 1) Activa la pestaña "Discussions" en tu repo de GitHub
+# 2) Genera los valores en https://giscus.app
+# giscus = { repo = "tu-usuario/pulso-archivo", repo_id = "R_kgDO...", category = "Comentarios", category_id = "DIC_kwDO..." }
+
+links = [
+  { label = "Bandcamp",    url = "https://bandcamp.com/tu-usuario",          desc = "tienda / extras" },
+  { label = "archive.org", url = "https://archive.org/details/tu-archivo",   desc = "espejo de audio" },
+  { label = "Discord",     url = "https://discord.gg/tu-servidor",           desc = "comunidad" },
+]
