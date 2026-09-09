@@ -1,4 +1,4 @@
 ---
-title = "Puro Sonido de Club"
-generate_feeds = "true"
+title: "Puro Sonido de Club"
+generate_feeds: true
 ---
