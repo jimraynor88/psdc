@@ -1,7 +1,6 @@
 ---
 title: "Hard House Vault"
 weight: 3
-kicker: "Show 03 — Hard house & hard trance"
 nav_sub: "// raw"
 accent: "#c9cfd8"
 accent2: "#8d99ad"
