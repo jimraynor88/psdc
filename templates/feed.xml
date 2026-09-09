@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+<channel>
+  {% set pulso = (context.ancestors | first) if (context.ancestors | length > 0) else context %}
+  <title>{% if context.path %}{{ context.title }} · PULSO ARCHIVO{% else %}PULSO ARCHIVO{% endif %}</title>
+  <link>{{ context.permalink | safe }}</link>
+  <description>{{ pulso.description | default(site_config.description) }}</description>
+  <language>{{ pulso.language | default(value="es") }}</language>
+  <lastBuildDate>{{ now | date(format="%a, %d %b %Y %H:%M:%S %z") }}</lastBuildDate>
+  <atom:link href="{{ context.permalink | safe }}feed.xml" rel="self" type="application/rss+xml"/>
+  <itunes:author>{{ pulso.author | default(site_config.title) }}</itunes:author>
+  <itunes:explicit>no</itunes:explicit>
+  <itunes:block>no</itunes:block>
+  {% if pulso.cover_url %}<itunes:image href="{{ pulso.cover_url }}"/>{% endif %}
+  {% for c in pulso.categories | default(value=[]) %}<itunes:category text="{{ c }}">{% endfor %}
+  {% set shown = 0 %}
+  {% for page in context.pages | sort(attribute="date", reverse=true) %}
+  {% if page.audio and shown < 100 %}
+  <item>
+    <title>{% if page.season %}T{{ page.season | format("%02d") }}{% endif %}{% if page.episode %}.{{ page.episode }}{% endif %} — {{ page.title }}</title>
+    <link>{{ page.permalink | safe }}</link>
+    <guid isPermaLink="true">{{ page.permalink | safe }}</guid>
+    <pubDate>{{ page.date | date(format="%a, %d %b %Y %H:%M:%S %z") }}</pubDate>
+    <description>{{ page.description | default(value="") }}</description>
+    <enclosure url="{{ page.audio }}" type="{{ page.audio_type | default(value="audio/mpeg") }}"{% if page.audio_size %} length="{{ page.audio_size }}"{% endif %}/>
+    <itunes:author>{{ page.author | default(pulso.author | default(site_config.title)) }}</itunes:author>
+    {% if page.duration %}<itunes:duration>{{ page.duration }}</itunes:duration>{% endif %}
+    {% if page.season %}<itunes:season>{{ page.season }}</itunes:season>{% endif %}
+    {% if page.episode %}<itunes:episode>{{ page.episode }}</itunes:episode>{% endif %}
+    <itunes:episodeType>{{ page.episode_type | default(value="regular") }}</itunes:episodeType>
+    <itunes:explicit>{{ page.explicit | default(value="no") }}</itunes:explicit>
+  </item>
+  {% set shown = shown + 1 %}
+  {% endif %}
+  {% endfor %}
+</channel>
+</rss>
