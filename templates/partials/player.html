@@ -1,4 +1,4 @@
-<audio id="audio" preload="metadata" data-dur="{{ page.duration | default(value="0:00") }}" src="{{ page.audio }}"></audio>
+<audio id="audio" preload="metadata" data-dur="{{ page.extra.duration | default(value="0:00") }}" src="{{ page.extra.audio }}"></audio>
 
 <div class="player">
   <div class="visuals">
@@ -7,13 +7,12 @@
     <div class="viz v-mic"><div class="mic"><div class="ring"></div><div class="ring r2"></div><div class="capsule"></div><div class="stem"></div><div class="base"></div></div></div>
     <div class="viz v-tv"><div class="crt"><span class="live">● ON AIR</span><div class="bars" id="tvbars"></div></div></div>
   </div>
-
   <div style="min-width:0">
     <div class="prow">
       <button class="btn" id="prevCh" title="marca anterior">⏮</button>
       <button class="btn big" id="playBtn" title="play/pause">▶</button>
       <button class="btn" id="nextCh" title="marca siguiente">⏭</button>
-      <div class="time"><b id="tCur">00:00</b> / <span id="tTot">{{ page.duration | default(value="--:--") }}</span></div>
+      <div class="time"><b id="tCur">00:00</b> / <span id="tTot">{{ page.extra.duration | default(value="--:--") }}</span></div>
     </div>
     <div class="prow" style="margin-top:8px">
       <input type="range" id="seek" min="0" max="0" value="0" step="1">
@@ -28,7 +27,7 @@
     </div>
     <div class="trow">
       <span class="lbl">Visual</span>
-      {% set vtype = page.type | default(value=pulso.visual | default(value="vinyl")) %}
+      {% set vtype = page.extra.type | default(value=pulso.extra.visual | default(value="vinyl")) %}
       <div class="vt">
         {% for v in ["vinyl", "speaker", "mic", "tv"] %}
         <button class="tgl{% if v == vtype %} on{% endif %}" data-v="v-{{ v }}">{{ v }}</button>
