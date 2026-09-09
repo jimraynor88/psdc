@@ -1,8 +1,6 @@
 ---
 title: "Hard House Vault"
 weight: 3
-accent: "#c9cfd8"
-accent2: "#8d99ad"
 badge: "1 temporada · 14 episodios"
 description: "Los duros. Breaks, kicks a 150+ y la vertiente hard de la dance de club. Para escuchar alto."
 visual: "tv"
