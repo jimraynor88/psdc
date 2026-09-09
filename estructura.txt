@@ -3,23 +3,15 @@ pulso-archivo/
 ├── .github/workflows/deploy.yml
 ├── content/
 │   ├── _index.md
-│   ├── neon-protocol/
-│   │   ├── _index.md
-│   │   ├── temporada-3/
-│   │   │   ├── _index.md
-│   │   │   ├── ep01-acid-nights.md
-│   │   │   └── ep02-....md
-│   ├── euro-wave-95/_index.md
-│   └── hard-house-vault/_index.md
+│   ├── bio/index.md
+│   ├── novedades/            (3 items de ejemplo)
+│   ├── neon-protocol/        (3 temporadas, 5 episodios de ejemplo)
+│   ├── euro-wave-95/         (1 temporada, 1 episodio)
+│   └── hard-house-vault/     (1 temporada, 1 episodio)
 ├── templates/
-│   ├── index.html
-│   ├── section.html (podcast)
-│   ├── _partials/header.html
-│   ├── _partials/sidebar.html
-│   ├── _partials/player.html
-│   ├── _partials/callouts... (not needed, use markdown)
-│   ├── single.html
-│   └── feed.xml (RSS)
-├── static/
-│   └── css/style.css
-│   └── js/main.js
+│   ├── index.html  section.html  single.html  feed.xml  404.html
+│   ├── _partials/  header, switch, sidebar, footer, player
+│   └── _shortcodes/callout.html
+└── static/
+    ├── css/style.css
+    └── js/main.js
