@@ -11,7 +11,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      BRANCH: pages           # ← cámbialo si tu rama se llama gh-pages u otro
+      BRANCH: gh-pages           # ← cámbialo si tu rama se llama gh-pages u otro
     steps:
       - uses: actions/checkout@v4
 
