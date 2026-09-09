@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ site_config.title }} — {{ site_config.description }}</title>
+  <meta name="description" content="{{ site_config.description }}">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="alternate" type="application/rss+xml" title="PULSO ARCHIVO RSS" href="/feed.xml">
+</head>
+{% set pulsos = get_sections() | filter(attribute="is_podcast") | sort(attribute="weight") %}
+{% set pulso = pulsos | first %}
+<body class="v-{{ pulso.visual | default(value="vinyl") }}" style="--acc:{{ pulso.accent | default(value="#53c8ff") }};--acc2:{{ pulso.accent2 | default(value="#2b6bff") }}">
+{% include "_partials/header.html" %}
+<div class="wrap">
+  {% include "_partials/switch.html" %}
+
+  <section class="hero">
+    <div class="kicker">{{ site_config.extra.tagline | default(value="") }}</div>
+    <h1>PULSO <em>ARCHIVO</em></h1>
+    <p>{{ site_config.description }}</p>
+    <div class="badges">
+      {% for p in pulsos %}<a class="badge acc" href="{{ p.permalink | safe }}">{{ p.title | upper }}</a>{% endfor %}
+      <a class="badge" href="/feed.xml">RSS ↗</a>
+    </div>
+  </section>
+
+  <main>
+    <div>
+      <div class="card">
+        <div class="card-hd"><h2>Podcasts</h2><span class="sub">{{ pulsos | length }} shows</span></div>
+        <div class="card-bd" style="display:grid;gap:12px">
+          {% for p in pulsos %}
+          <a class="pcard" style="--pc:{{ p.accent | default(value="#53c8ff") }}" href="{{ p.permalink | safe }}">
+            <div class="kick">{{ p.kicker | default(value="") }}</div>
+            <h3>{{ p.title }}</h3>
+            <p>{{ p.description }}</p>
+            <span class="go">ENTRAR → {{ p.badge | default(value="") | upper }}</span>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><h2>Últimos episodios</h2><span class="sub">todos los shows</span></div>
+        <div class="card-bd ep-list">
+          {% set n = 0 %}
+          {% for ep in get_pages() | filter(attribute="audio") | sort(attribute="date", reverse=true) %}
+          {% if n < 6 %}
+          <a class="ep" href="{{ ep.permalink | safe }}">
+            <span class="num">{% if ep.season %}T{{ ep.season | format("%02d") }}{% endif %}.{% if ep.episode %}{{ ep.episode }}{% endif %}</span>
+            <span>
+              <span class="t">{{ ep.title }}</span>
+              <span class="d" style="display:block">{{ (ep.ancestors | first) | attr("title") }} · {{ ep.date | date(format="%d %b %Y") }}{% if ep.duration %} · {{ ep.duration }}{% endif %}{% if ep.video_id %} · 🎬{% endif %}</span>
+            </span>
+            <span class="d" style="color:var(--acc)">→</span>
+          </a>
+          {% set n = n + 1 %}
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    {% include "_partials/sidebar.html" %}
+  </main>
+</div>
+{% include "_partials/footer.html" %}
+</body>
+</html>
