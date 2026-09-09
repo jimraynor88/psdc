@@ -15,7 +15,6 @@ license = "CC BY-NC 4.0"
 frequency = "irregular"
 format = "mp3 320 kbps"
 categories = ["Music"]
-boilerplate = """
-**Golden age edition.** Solo material de la época, sin remezclas modernas.
-"""
+boilerplate = "**Golden age edition.** Solo material de la época, sin remezclas modernas."
+generate_feeds = true
 ---
