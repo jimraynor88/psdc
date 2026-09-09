@@ -12,7 +12,6 @@ genre: "Acid / Techno"
 type: "vinyl"
 audio: "https://tu-bucket.r2.dev/neon-protocol/t3/ep12.mp3"
 audio_size: 47213312
-
 */ Hospedajes alternativos (chips clicables en la página):
 */ [[audio_alt]]
 */ label: "archive.org"
@@ -21,9 +20,9 @@ audio_size: 47213312
 */ [[audio_alt]]
 */ label: "WebDAV"
 */ url: "https://webdav.tu-dominio.de/podcasts/ep12.mp3"
-
 */ Vídeo opcional (se embebe en la página; el espectro pasa a modo simulado):
 */ video_id: "ID_DEL_VIDEO_DE_YOUTUBE"
+---
 
 [[chapters]]
 time: "00:38"
