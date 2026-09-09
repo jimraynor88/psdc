@@ -1,0 +1,9 @@
+<div class="switch">
+  {% set root = get_section(path="_index.md") %}
+  {% for sub in root.subsections %}
+    {% set s = get_section(path=sub) %}
+    {% if s.extra.is_podcast %}
+    <a class="tab{% if pulso is defined and pulso.path == s.path %} on{% endif %}" href="{{ s.permalink }}">{{ s.title | upper }}</a>
+    {% endif %}
+  {% endfor %}
+</div>
