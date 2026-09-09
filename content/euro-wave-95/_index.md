@@ -14,7 +14,6 @@ language: es
 license: CC BY-NC 4.0
 frequency: irregular
 format: mp3
-categories: {Music}
 boilerplate: **Golden age edition.** Solo material de la época, sin remezclas modernas.
 generate_feeds: true
 ---
