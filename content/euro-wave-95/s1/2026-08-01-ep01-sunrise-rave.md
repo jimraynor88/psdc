@@ -1,16 +1,16 @@
 ---
-title = "Sunrise Rave"
-description = "Eurodance de radio y de sala: la dualidad del género en 1995."
-season = 1
-episode = 1
-date = 2026-08-01
-original_date = "1995"
-author = "DJ Pulsar"
-duration = "44:12"
-bpm = 128
-genre = "Eurodance"
-type = "speaker"
-audio = "https://tu-bucket.r2.dev/euro-wave-95/t1/ep01.mp3"
+title: "Sunrise Rave"
+description: "Eurodance de radio y de sala: la dualidad del género en 1995."
+season: 1
+episode: 1
+date: 2026-08-01
+original_date: "1995"
+author: DJ-DuRaN
+duration: "44:12"
+bpm: 128
+genre: "Eurodance"
+type: "speaker"
+audio: "https://tu-bucket.r2.dev/euro-wave-95/t1/ep01.mp3"
 ---
 
 La cara dual del eurodance: radio y warehouse.
