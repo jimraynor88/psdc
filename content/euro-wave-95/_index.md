@@ -1,7 +1,6 @@
 ---
 title: Euro Wave 95
 weight: 2
-is_podcast: true
 kicker: Show 02 — Eurodance & Eurohouse
 nav_sub: // golden age
 accent: #ff8a2a
