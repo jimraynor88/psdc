@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ section.title }} · PULSO ARCHIVO</title>
+  <meta name="description" content="{{ section.description | default(site_config.description) }}">
+  <link rel="stylesheet" href="/css/style.css">
+  {% if section.is_podcast %}<link rel="alternate" type="application/rss+xml" title="{{ section.title }} RSS" href="{{ section.permalink | safe }}feed.xml">{% endif %}
+</head>
+{% set pulso = section if section.is_podcast else (section.ancestors | first) %}
+<body class="v-{{ pulso.visual | default(value="vinyl") }}" style="--acc:{{ pulso.accent | default(value="#53c8ff") }};--acc2:{{ pulso.accent2 | default(value="#2b6bff") }}">
+{% include "_partials/header.html" %}
+<div class="wrap">
+  {% include "_partials/switch.html" %}
+
+  <section class="hero">
+    <div class="kicker">{{ pulso.kicker | default(value=pulso.title) }}</div>
+    <h1><span>{{ pulso.title }}</span> <em>{{ pulso.nav_sub | default(value="// archive") }}</em></h1>
+    <p>{{ pulso.description | default("") }}</p>
+    <div class="badges">
+      {% if pulso.badge %}<span class="badge acc">{{ pulso.badge | upper }}</span>{% endif %}
+      <span class="badge">AUDIO</span>
+      {% if pulso.is_podcast %}<a class="badge" href="{{ pulso.permalink | safe }}feed.xml">RSS ↗</a>{% endif %}
+    </div>
+  </section>
+
+  <main>
+    <div>
+      {% if section.is_podcast %}
+        <div class="card">
+          <div class="card-hd"><h2>Temporadas</h2><span class="sub">{{ section.children | length }} temporadas</span></div>
+          <div class="card-bd seasons">
+            {% for s in section.children %}
+            <a class="season" href="{{ s.permalink | safe }}">
+              <div class="n">{{ s.title | upper }}</div>
+              <div class="e">{{ s.pages | length }} episodios{% if s.date %} · {{ s.date | date(format="%Y") }}{% endif %}</div>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-hd"><h2>Episodios</h2><span class="sub">todas las temporadas</span></div>
+          <div class="card-bd ep-list">
+            {% for ep in get_pages(path=section.path) | sort(attribute="date", reverse=true) %}
+            <a class="ep" href="{{ ep.permalink | safe }}">
+              <span class="num">{% if ep.season %}T{{ ep.season | format("%02d") }}{% endif %}.{% if ep.episode %}{{ ep.episode }}{% endif %}</span>
+              <span>
+                <span class="t">{{ ep.title }}</span>
+                <span class="d" style="display:block">{{ ep.date | date(format="%d %b %Y") }}{% if ep.duration %} · {{ ep.duration }}{% endif %}{% if ep.video_id %} · 🎬{% endif %}</span>
+              </span>
+              <span class="d" style="color:var(--acc)">→</span>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+
+      {% elif section.is_season %}
+        <div class="card">
+          <div class="card-hd"><h2>{{ section.title }}</h2><span class="sub">{{ section.pages | length }} episodios</span></div>
+          {% if section.content %}<div class="card-bd md">{{ section.content }}</div>{% endif %}
+          <div class="card-bd ep-list">
+            {% for ep in section.pages | sort(attribute="episode") %}
+            <a class="ep" href="{{ ep.permalink | safe }}">
+              <span class="num">{% if ep.season %}T{{ ep.season | format("%02d") }}{% endif %}.{% if ep.episode %}{{ ep.episode }}{% endif %}</span>
+              <span>
+                <span class="t">{{ ep.title }}</span>
+                <span class="d" style="display:block">{{ ep.date | date(format="%d %b %Y") }}{% if ep.duration %} · {{ ep.duration }}{% endif %}{% if ep.video_id %} · 🎬{% endif %}</span>
+              </span>
+              <span class="d" style="color:var(--acc)">→</span>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+        <a href="{{ pulso.permalink | safe }}feed.xml" class="rssline">RSS de todo el podcast ↗</a>
+
+      {% else %}
+        <div class="card">
+          {% if section.content %}<div class="card-bd md">{{ section.content }}</div>{% endif %}
+          <div class="card-bd ep-list">
+            {% for p in section.pages | sort(attribute="date", reverse=true) %}
+            <a class="ep" href="{{ p.permalink | safe }}">
+              <span class="num">{{ p.date | date(format="%Y-%m-%d") }}</span>
+              <span><span class="t">{{ p.title }}</span><span class="d" style="display:block">{{ p.description | default("") }}</span></span>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    {% include "_partials/sidebar.html" %}
+  </main>
+</div>
+{% include "_partials/footer.html" %}
+</body>
+</html>
