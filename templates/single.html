@@ -9,9 +9,9 @@
 </head>
 {% if page.ancestors | length > 1 %}{% set pulso = get_section(path=page.ancestors[1]) %}{% endif %}
 {% set alen = page.ancestors | length %}
-{% set last = page.ancestors[alen - 1] %}
+{% set last = page.ancestors | last %}
 {% set second = page.ancestors[1] %}
-{% set has_season = alen > 1 and last != second %}{% if has_season %}{% set season = get_section(path=page.ancestors | last) %}{% endif %}
+{% set has_season = alen > 1 and last != second %}
 {% set vtype = page.extra.type | default(value=pulso.extra.visual | default(value="vinyl")) %}
 <body class="v-{{ vtype }}" style="--acc:{{ pulso.extra.accent | default(value="#53c8ff") }};--acc2:{{ pulso.extra.accent2 | default(value="#2b6bff") }}">
 {% include "partials/header.html" %}
