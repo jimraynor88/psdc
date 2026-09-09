@@ -1,20 +1,43 @@
-name: deploy
+name: build y deploy
 on:
   push:
-    branches: [main, master]
+    branches: [main]          # solo arranca al push en main (evita bucles)
   workflow_dispatch:
+
+permissions:
+  contents: write             # permite al token empujar a la rama pages
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      BRANCH: pages           # ← cámbialo si tu rama se llama gh-pages u otro
     steps:
       - uses: actions/checkout@v4
-      - name: Instalar Zola
-        run: npm install -g zola-cli
+
+      - name: Instalar Zola (versión FIJA, nunca "la última")
+        run: |
+          VER=0.21.0
+          curl -sL "https://github.com/getzola/zola/releases/download/v${VER}/zola-${VER}-x86_64-unknown-linux-musl.tar.gz" | tar xz
+          sudo install zola /usr/local/bin/zola
+          zola --version
+
       - name: Build
         run: zola build
-      - name: Deploy a Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: pages deploy public --project-name=pulso-archivo
+
+      - name: Publicar en la rama de pages
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # el build va a salvo fuera del repo
+          mkdir /tmp/site && cp -r public/. /tmp/site/
+
+          git checkout --orphan "$BRANCH"
+          git reset
+          git clean -fdx
+          cp -r /tmp/site/. .
+
+          git add -A
+          git commit -m "Deploy: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push -f origin "HEAD:$BRANCH"
