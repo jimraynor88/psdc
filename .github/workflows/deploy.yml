@@ -1,0 +1,20 @@
+name: deploy
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar Zola
+        run: npm install -g zola-cli
+      - name: Build
+        run: zola build
+      - name: Deploy a Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: pages deploy public --project-name=pulso-archivo
