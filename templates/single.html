@@ -7,9 +7,7 @@
   <meta name="description" content="{{ page.description | default(value=site_config.description) }}">
   <link rel="stylesheet" href="/css/style.css">
 </head>
-{% if page.ancestors | length > 1 %}
-  {% set pulso = get_section(path=page.ancestors[1]) %}
-{% endif %}
+{% if page.ancestors | length > 1 %}{% set pulso = get_section(path=page.ancestors[1]) %}{% endif %}
   {% set has_season = (page.ancestors | last != page.ancestors | nth(1)) %}
 {% if has_season %}{% set season = get_section(path=page.ancestors | last) %}{% endif %}
 {% set vtype = page.extra.type | default(value=pulso.extra.visual | default(value="vinyl")) %}
