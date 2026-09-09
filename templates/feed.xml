@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
 <channel>
-  {% set pulso = (context.ancestors | first) if (context.ancestors | length > 0) else context %}
-  <title>{% if context.path %}{{ context.title }} · PULSO ARCHIVO{% else %}PULSO ARCHIVO{% endif %}</title>
-  <link>{{ context.permalink | safe }}</link>
-  <description>{{ pulso.description | default(site_config.description) }}</description>
-  <language>{{ pulso.language | default(value="es") }}</language>
+  {% if context.extra.is_podcast %}
+    {% set pulso = context %}
+  {% else %}
+    {% set pulso = get_section(path=context.ancestors | last) %}
+  {% endif %}
+  <title>{% if context.extra.is_podcast %}PURO SONIDO DE CLUB{% else %}{{ context.title }} · PULSO ARCHIVO{% endif %}</title>
+  <link>{{ context.permalink }}</link>
+  <description>{{ pulso.description | default(value=site_config.description) }}</description>
+  <language>{{ pulso.extra.language | default(value="es") }}</language>
   <lastBuildDate>{{ now | date(format="%a, %d %b %Y %H:%M:%S %z") }}</lastBuildDate>
-  <atom:link href="{{ context.permalink | safe }}feed.xml" rel="self" type="application/rss+xml"/>
-  <itunes:author>{{ pulso.author | default(site_config.title) }}</itunes:author>
+  <atom:link href="{{ context.permalink }}feed.xml" rel="self" type="application/rss+xml"/>
+  <itunes:author>{{ pulso.extra.author | default(value=site_config.title) }}</itunes:author>
   <itunes:explicit>no</itunes:explicit>
   <itunes:block>no</itunes:block>
-  {% if pulso.cover_url %}<itunes:image href="{{ pulso.cover_url }}"/>{% endif %}
-  {% for c in pulso.categories | default(value=[]) %}<itunes:category text="{{ c }}">{% endfor %}
-  {% set shown = 0 %}
-  {% for page in context.pages | sort(attribute="date", reverse=true) %}
-  {% if page.audio and shown < 100 %}
+  {% if pulso.extra.cover_url %}<itunes:image href="{{ pulso.extra.cover_url }}"/>{% endif %}
+  {% set items = context.pages %}
+  {% for sp in context.subsections %}
+    {% set s = get_section(path=sp) %}
+    {% set items = items | concat(with=s.pages) %}
+  {% endfor %}
+  {% for ep in items %}
+  {% if ep.extra.audio %}
   <item>
-    <title>{% if page.season %}T{{ page.season | format("%02d") }}{% endif %}{% if page.episode %}.{{ page.episode }}{% endif %} — {{ page.title }}</title>
-    <link>{{ page.permalink | safe }}</link>
-    <guid isPermaLink="true">{{ page.permalink | safe }}</guid>
-    <pubDate>{{ page.date | date(format="%a, %d %b %Y %H:%M:%S %z") }}</pubDate>
-    <description>{{ page.description | default(value="") }}</description>
-    <enclosure url="{{ page.audio }}" type="{{ page.audio_type | default(value="audio/mpeg") }}"{% if page.audio_size %} length="{{ page.audio_size }}"{% endif %}/>
-    <itunes:author>{{ page.author | default(pulso.author | default(site_config.title)) }}</itunes:author>
-    {% if page.duration %}<itunes:duration>{{ page.duration }}</itunes:duration>{% endif %}
-    {% if page.season %}<itunes:season>{{ page.season }}</itunes:season>{% endif %}
-    {% if page.episode %}<itunes:episode>{{ page.episode }}</itunes:episode>{% endif %}
-    <itunes:episodeType>{{ page.episode_type | default(value="regular") }}</itunes:episodeType>
-    <itunes:explicit>{{ page.explicit | default(value="no") }}</itunes:explicit>
+    <title>{% if ep.extra.season %}T{{ ep.extra.season }}{% endif %}{% if ep.extra.episode %}.{{ ep.extra.episode }}{% endif %} — {{ ep.title }}</title>
+    <link>{{ ep.permalink }}</link>
+    <guid isPermaLink="true">{{ ep.permalink }}</guid>
+    <pubDate>{{ ep.date | date(format="%a, %d %b %Y %H:%M:%S %z") }}</pubDate>
+    <description>{{ ep.description | default(value="") }}</description>
+    <enclosure url="{{ ep.extra.audio }}" type="{{ ep.extra.audio_type | default(value="audio/mpeg") }}"{% if ep.extra.audio_size %} length="{{ ep.extra.audio_size }}"{% endif %}/>
+    <itunes:author>{{ ep.extra.author | default(value=pulso.extra.author | default(value=site_config.title)) }}</itunes:author>
+    {% if ep.extra.duration %}<itunes:duration>{{ ep.extra.duration }}</itunes:duration>{% endif %}
+    {% if ep.extra.season %}<itunes:season>{{ ep.extra.season }}</itunes:season>{% endif %}
+    {% if ep.extra.episode %}<itunes:episode>{{ ep.extra.episode }}</itunes:episode>{% endif %}
+    <itunes:episodeType>{{ ep.extra.episode_type | default(value="regular") }}</itunes:episodeType>
+    <itunes:explicit>{{ ep.extra.explicit | default(value="no") }}</itunes:explicit>
   </item>
-  {% set shown = shown + 1 %}
   {% endif %}
   {% endfor %}
 </channel>
