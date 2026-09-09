@@ -1,0 +1,19 @@
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="/"><span>PURO SONIDO<b>▮</b>DE CLUB</span><span class="cur">_</span></a>
+    <nav>
+      {% set root = get_section(path="_index.md") %}
+      <a href="/" class="{% if section is defined and section.path == "_index.md" %}on{% endif %}">Inicio</a>
+      {% for sub in root.subsections %}
+        {% set s = get_section(path=sub) %}
+        {% if s.extra.is_podcast %}
+          <a href="{{ s.permalink }}" class="{% if pulso is defined and pulso.path == s.path %}on{% endif %}">{{ s.title }}</a>
+        {% endif %}
+      {% endfor %}
+      <a href="/novedades/" class="{% if section is defined and section.path | containing("novedades") %}on{% endif %}">Novedades</a>
+      <a href="/bio/" class="{% if section is defined and section.path | containing("bio") %}on{% endif %}">Bio</a>
+    </nav>
+    <div class="eq"><i></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="spectrum"></div>
+</header>
