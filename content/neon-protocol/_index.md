@@ -15,8 +15,7 @@ frequency: mensual
 format: mp3
 categories: ["Music"]
 # cover_url: "https://tu-dominio.com/covers/neon-protocol.jpg"  (imagen cuadrada para el itunes:image del feed)
-boilerplate: """ **Archivo de difusión sin ánimo de lucro.** Si eres autor o representante de algún track y prefieres que se retire, escríbeme y se retira en 24 h.
-"""
+boilerplate: """ **Archivo de difusión sin ánimo de lucro.** Si eres autor o representante de algún track y prefieres que se retire, escríbeme y se retira en 24 h."""
 ---
 
 Texto introductorio opcional del podcast (aparece en la página del show, debajo de la cabecera no — en su feed y páginas).
