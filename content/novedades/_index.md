@@ -1,4 +1,4 @@
 ---
 title = "Novedades"
-generate_feed = false
+generate_feeds = false
 ---
