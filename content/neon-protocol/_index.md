@@ -1,7 +1,7 @@
 ---
 title: "Neon Protocol"
 weight: 1
-kicker; Show 01 — Archivo techno & trance
+kicker: Show 01 — Archivo techno & trance
 nav_sub: // archive
 accent: #53c8ff
 accent2: #2b6bff
