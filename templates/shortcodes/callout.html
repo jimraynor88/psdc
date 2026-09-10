@@ -1,4 +1,5 @@
 {% set t = type | default(value="info") %}
+{% set lbl = label | default(value=t) %}
 {% if t == "info" %}{% set icon = "ⓘ" %}
 {% elif t == "note" %}{% set icon = "✎" %}
 {% elif t == "tip" %}{% set icon = "✦" %}
@@ -6,6 +7,6 @@
 {% elif t == "quote" %}{% set icon = "❝" %}
 {% else %}{% set icon = "ⓘ" %}{% endif %}
 <div class="co {{ t }}">
-  <div class="hd">{{ icon }} {{ label | default(value=t | upper) }}</div>
-  <div class="bd">{{ content | markdown }}</div>
+ <div class="hd">{{ icon }} {{ lbl | upper }}</div>
+ <div class="bd">{{ content | markdown }}</div>
 </div>
