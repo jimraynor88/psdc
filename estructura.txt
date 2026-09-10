@@ -1,27 +1,53 @@
-HIGH-FREQUENCY/
-├── config.toml
-├── .github/workflows/deploy.yml
-├── content/
-│   ├── _index.md
-│   ├── bio/index.md
-│   ├── novedades/            (3 items de ejemplo)
-│   ├── neon-protocol/        (3 temporadas, 5 episodios de ejemplo)
-│   ├── euro-wave-95/         (1 temporada, 1 episodio)
-│   └── hard-house-vault/     (1 temporada, 1 episodio)
-├── templates/
-│   ├── index.html  section.html  single.html  feed.xml  404.html
-│   ├── _partials/  header, switch, sidebar, footer, player
-│   └── _shortcodes/callout.html
-└── static/
-    ├── css/style.css
-    └── js/main.js
-
-
-templates/
-  index.html  section.html  single.html  feed.xml  404.html
-  partials/          ← antes _partials (sin guion bajo)
-    header.html  switch.html  sidebar.html  footer.html  player.html
-  shortcodes/        ← antes _shortcodes
-    callout.html
-content/
-  bio/_index.md      ← antes bio/index.md  (debe ser una SECCIÓN, no un page)
+pulso-archivo/
+├── astro.config.mjs
+├── keystatic.config.ts
+├── markdoc.config.mjs
+├── wrangler.jsonc
+├── package.json
+├── tsconfig.json
+├── .gitignore
+├── .github/workflows/deploy.yml       ← opcional (si prefieres GH Actions)
+├── public/
+│   ├── css/style.css                  ← el CSS del mockup (ya lo tienes)
+│   └── js/main.js                     ← el JS del player (ya lo tienes)
+├── src/
+│   ├── content.config.ts
+│   ├── content/
+│   │   ├── site/site.yaml
+│   │   ├── bio/bio.yaml
+│   │   ├── shows/
+│   │   │   ├── neon-protocol.yaml
+│   │   │   ├── euro-wave-95.yaml
+│   │   │   └── hard-house-vault.yaml
+│   │   ├── episodes/
+│   │   │   ├── ep12-acid-nights.mdoc
+│   │   │   ├── ep11-neon-sky.mdoc
+│   │   │   ├── ep01-first-light.mdoc
+│   │   │   └── ep01-sunrise-rave.mdoc
+│   │   └── novedades/
+│   │       ├── t03-ep12-publicado.mdoc
+│   │       ├── nuevos-feeds.mdoc
+│   │       └── r2-migracion.mdoc
+│   ├── layouts/
+│   │   └── Base.astro
+│   ├── components/
+│   │   ├── Header.astro
+│   │   ├── ShowSwitcher.astro
+│   │   ├── Sidebar.astro
+│   │   ├── EpisodePlayer.astro
+│   │   ├── SeasonGrid.astro
+│   │   ├── Callout.astro
+│   │   └── Footer.astro
+│   ├── pages/
+│   │   ├── index.astro
+│   │   ├── bio.astro
+│   │   ├── novedades.astro
+│   │   ├── 404.astro
+│   │   ├── feed.xml.ts
+│   │   ├── [show]/
+│   │   │   ├── index.astro
+│   │   │   ├── feed.xml.ts
+│   │   │   └── [season]/
+│   │   │       ├── index.astro
+│   │   │       └── [episode].astro
+│   └── env.d.ts
