@@ -1,4 +1,4 @@
 ---
-title = "Novedades"
-generate_feeds = false
+title: "Novedades"
+generate_feeds: false
 ---
