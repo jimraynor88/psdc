@@ -1,54 +1,57 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ site_config.title }} — {{ site_config.description }}</title>
-  <meta name="description" content="{{ site_config.description }}">
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="alternate" type="application/rss+xml" title="PULSO ARCHIVO" href="/feed.xml">
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>{{ site_config.title }} — {{ site_config.description }}</title>
+ <meta name="description" content="{{ site_config.description }}">
+ <link rel="stylesheet" href="/css/style.css">
+ <link rel="alternate" type="application/rss+xml" title="PURO SONIDO DE CLUB" href="/feed.xml">
 </head>
 {% set root = get_section(path="_index.md") %}
 {% set podcasts = [] %}
-{% set first_p = "" %}
+{% set has_first = false %}
 {% for sub in root.subsections %}
-  {% set s = get_section(path=sub) %}
-  {% if s.extra.is_podcast %}
-    {% set podcasts = podcasts | concat(with=s) %}
-    {% if first_p == "" %}{% set first_p = s %}{% endif %}
-  {% endif %}
+ {% set s = get_section(path=sub) %}
+ {% if s.extra.is_podcast %}
+ {% set podcasts = podcasts | concat(with=s) %}
+ {% if not has_first %}{% set first_p = s %}{% set has_first = true %}{% endif %}
+ {% endif %}
 {% endfor %}
-<body class="v-{{ first_p.extra.visual | default(value="vinyl") }}" style="--acc:{{ first_p.extra.accent | default(value="#53c8ff") }};--acc2:{{ first_p.extra.accent2 | default(value="#2b6bff") }}">
+{% if has_first %}{% set pulso = first_p %}{% set first_visual = first_p.extra.visual | default(value="vinyl") %}{% set first_acc = first_p.extra.accent | default(value="#53c8ff") %}{% set first_acc2 = first_p.extra.accent2 | default(value="#2b6bff") %}
+{% else %}{% set first_visual = "vinyl" %}{% set first_acc = "#53c8ff" %}{% set first_acc2 = "#2b6bff" %}{% endif %}
+<body class="v-{{ first_visual }}" style="--acc:{{ first_acc }};--acc2:{{ first_acc2 }}">
 {% include "partials/header.html" %}
 <div class="wrap">
-  {% include "partials/switch.html" %}
-  <section class="hero">
-    <div class="kicker">{{ site_config.extra.tagline | default(value="") }}</div>
-    <h1>PURO <em>SONIDO <em>DE <em>CLUB</em></h1>
-    <p>{{ site_config.description }}</p>
-    <div class="badges">
-      {% for p in podcasts %}<a class="badge acc" href="{{ p.permalink }}">{{ p.title | upper }}</a>{% endfor %}
-      <a class="badge" href="/feed.xml">RSS ↗</a>
-    </div>
-  </section>
-  <main>
-    <div>
-      <div class="card">
-        <div class="card-hd"><h2>Podcasts</h2><span class="sub">{{ podcasts | length }} shows</span></div>
-        <div class="card-bd" style="display:grid;gap:12px">
-          {% for p in podcasts %}
-          <a class="pcard" style="--pc:{{ p.extra.accent | default(value="#53c8ff") }}" href="{{ p.permalink }}">
-            <div class="kick">{{ p.extra.kicker | default(value="") }}</div>
-            <h3>{{ p.title }}</h3>
-            <p>{{ p.description }}</p>
-            <span class="go">ENTRAR → {{ p.extra.badge | default(value="") | upper }}</span>
-          </a>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-    {% include "partials/sidebar.html" %}
-  </main>
+ {% include "partials/switch.html" %}
+ <section class="hero">
+ <div class="kicker">{{ site_config.extra.tagline | default(value="") }}</div>
+ <h1>PURO <em>SONIDO <em>DE <em>CLUB</em></h1>
+ <p>{{ site_config.description }}</p>
+ <div class="badges">
+ {% for p in podcasts %}<a class="badge acc" href="{{ p.permalink }}">{{ p.title | upper }}</a>{% endfor %}
+ <a class="badge" href="/feed.xml">RSS ↗</a>
+ </div>
+ </section>
+ <main>
+ <div>
+ <div class="card">
+ <div class="card-hd"><h2>Podcasts</h2><span class="sub">{{ podcasts | length }} shows</span></div>
+ <div class="card-bd" style="display:grid;gap:12px">
+ {% for p in podcasts %}
+ {% set pacc = p.extra.accent | default(value="#53c8ff") %}
+ <a class="pcard" style="--pc:{{ pacc }}" href="{{ p.permalink }}">
+ <div class="kick">{{ p.extra.kicker | default(value="") }}</div>
+ <h3>{{ p.title }}</h3>
+ <p>{{ p.description }}</p>
+ <span class="go">ENTRAR → {{ p.extra.badge | default(value="") | upper }}</span>
+ </a>
+ {% endfor %}
+ </div>
+ </div>
+ </div>
+ {% include "partials/sidebar.html" %}
+ </main>
 </div>
 {% include "partials/footer.html" %}
 </body>
