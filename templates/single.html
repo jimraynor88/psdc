@@ -1,124 +1,126 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ page.title }} · PURO SONIDO DE CLUB</title>
-  <meta name="description" content="{{ page.description | default(value=site_config.description) }}">
-  <link rel="stylesheet" href="/css/style.css">
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>{{ page.title }} · PURO SONIDO DE CLUB</title>
+ <meta name="description" content="{{ page.description | default(value=site_config.description) }}">
+ <link rel="stylesheet" href="/css/style.css">
 </head>
 {% if page.ancestors | length > 1 %}{% set pulso = get_section(path=page.ancestors[1]) %}{% endif %}
 {% set alen = page.ancestors | length %}
 {% set last = page.ancestors | last %}
 {% set second = page.ancestors[1] %}
 {% set has_season = alen > 1 and last != second %}
-{% set vtype = page.extra.type | default(value=pulso.extra.visual | default(value="vinyl")) %}
+{% if has_season %}{% set season = get_section(path=last) %}{% endif %}
+{% set visual_def = pulso.extra.visual | default(value="vinyl") %}
+{% set vtype = page.extra.type | default(value=visual_def) %}
 <body class="v-{{ vtype }}" style="--acc:{{ pulso.extra.accent | default(value="#53c8ff") }};--acc2:{{ pulso.extra.accent2 | default(value="#2b6bff") }}">
 {% include "partials/header.html" %}
 <div class="wrap">
-  {% include "partials/switch.html" %}
-  <section class="hero">
-    <div class="kicker">{{ pulso.extra.kicker | default(value=pulso.title) }}</div>
-    <h1><span>{{ pulso.title }}</span> <em>{{ pulso.extra.nav_sub | default(value="// archive") }}</em></h1>
-    <p>{{ pulso.description | default(value="") }}</p>
-    <div class="badges">
-      {% if pulso.extra.badge %}<span class="badge acc">{{ pulso.extra.badge | upper }}</span>{% endif %}
-      {% if page.extra.video_id %}<span class="badge">AUDIO + VIDEO</span>{% elif page.extra.audio %}<span class="badge">AUDIO</span>{% endif %}
-      <a class="badge" href="{{ pulso.permalink }}feed.xml">RSS ↗</a>
-    </div>
-  </section>
+ {% include "partials/switch.html" %}
+ <section class="hero">
+ <div class="kicker">{{ pulso.extra.kicker | default(value=pulso.title) }}</div>
+ <h1><span>{{ pulso.title }}</span> <em>{{ pulso.extra.nav_sub | default(value="// archive") }}</em></h1>
+ <p>{{ pulso.description | default(value="") }}</p>
+ <div class="badges">
+ {% if pulso.extra.badge %}<span class="badge acc">{{ pulso.extra.badge | upper }}</span>{% endif %}
+ {% if page.extra.video_id %}<span class="badge">AUDIO + VIDEO</span>{% elif page.extra.audio %}<span class="badge">AUDIO</span>{% endif %}
+ <a class="badge" href="{{ pulso.permalink }}feed.xml">RSS ↗</a>
+ </div>
+ </section>
 
-  <main>
-    <div>
-      {% if page.extra.audio %}
-      <div class="card">
-        <div class="card-hd">
-          <h2>Episodio</h2>
-          <span class="sub">{% if has_season %}{{ season.title | upper }} · {% endif %}tipo: <b style="color:var(--acc)">{{ vtype }}</b></span>
-        </div>
-        <div class="card-bd">
-          <h3 style="font-size:21px;margin-bottom:4px">{{ page.title }}</h3>
-          <p style="color:var(--muted);font-size:13.5px;margin-bottom:16px">{{ page.description | default(value="") }}</p>
-          <div class="meta">
-            {% if page.extra.season %}<div><div class="k">Temporada</div><div class="v a">{{ page.extra.season }}</div></div>{% endif %}
-            {% if page.extra.episode %}<div><div class="k">Episodio</div><div class="v">{{ page.extra.episode }}</div></div>{% endif %}
-            <div><div class="k">Publicado</div><div class="v">{{ page.date | date(format="%d · %m · %Y") }}</div></div>
-            {% if page.extra.duration %}<div><div class="k">Duración</div><div class="v">{{ page.extra.duration }}</div></div>{% endif %}
-            {% if page.extra.author %}<div><div class="k">Autor</div><div class="v">{{ page.extra.author }}</div></div>{% endif %}
-            {% if page.extra.original_date %}<div><div class="k">Fecha original</div><div class="v">{{ page.extra.original_date }}</div></div>{% endif %}
-            {% if page.extra.bpm %}<div><div class="k">BPM</div><div class="v a">{{ page.extra.bpm }}</div></div>{% endif %}
-            {% if page.extra.genre %}<div><div class="k">Género</div><div class="v">{{ page.extra.genre }}</div></div>{% endif %}
-          </div>
-          <div class="chips">
-            <span class="chip on">◆ <b>AUDIO</b></span>
-            {% for h in page.extra.audio_alt | default(value=[]) %}
-            <a class="chip" href="{{ h.url }}" target="_blank" rel="noopener">{{ h.label }} <b>↗</b></a>
-            {% endfor %}
-            {% if page.extra.video_id %}<span class="chip">🎬 <b>video (YT)</b></span>{% endif %}
-          </div>
-          {% include "partials/player.html" %}
-          {% if page.extra.video_id %}
-          <div class="video" style="display:grid">
-            <iframe src="https://www.youtube-nocookie.com/embed/{{ page.extra.video_id }}" title="Video del episodio" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-          </div>
-          <div class="co info"><div class="hd">ⓘ Info</div><div class="bd">Con vídeo de YouTube el visualizador de frecuencias se muestra <b>simulado</b>.</div></div>
-          {% endif %}
-        </div>
-      </div>
+ <main>
+ <div>
+ {% if page.extra.audio %}
+ <div class="card">
+ <div class="card-hd">
+ <h2>Episodio</h2>
+ <span class="sub">{% if has_season %}{{ season.title | upper }} · {% endif %}tipo: <b style="color:var(--acc)">{{ vtype }}</b></span>
+ </div>
+ <div class="card-bd">
+ <h3 style="font-size:21px;margin-bottom:4px">{{ page.title }}</h3>
+ <p style="color:var(--muted);font-size:13.5px;margin-bottom:16px">{{ page.description | default(value="") }}</p>
+ <div class="meta">
+ {% if page.extra.season %}<div><div class="k">Temporada</div><div class="v a">{{ page.extra.season }}</div></div>{% endif %}
+ {% if page.extra.episode %}<div><div class="k">Episodio</div><div class="v">{{ page.extra.episode }}</div></div>{% endif %}
+ <div><div class="k">Publicado</div><div class="v">{{ page.date | date(format="%d · %m · %Y") }}</div></div>
+ {% if page.extra.duration %}<div><div class="k">Duración</div><div class="v">{{ page.extra.duration }}</div></div>{% endif %}
+ {% if page.extra.author %}<div><div class="k">Autor</div><div class="v">{{ page.extra.author }}</div></div>{% endif %}
+ {% if page.extra.original_date %}<div><div class="k">Fecha original</div><div class="v">{{ page.extra.original_date }}</div></div>{% endif %}
+ {% if page.extra.bpm %}<div><div class="k">BPM</div><div class="v a">{{ page.extra.bpm }}</div></div>{% endif %}
+ {% if page.extra.genre %}<div><div class="k">Género</div><div class="v">{{ page.extra.genre }}</div></div>{% endif %}
+ </div>
+ <div class="chips">
+ <span class="chip on">◆ <b>AUDIO</b></span>
+ {% for h in page.extra.audio_alt | default(value=[]) %}
+ <a class="chip" href="{{ h.url }}" target="_blank" rel="noopener">{{ h.label }} <b>↗</b></a>
+ {% endfor %}
+ {% if page.extra.video_id %}<span class="chip">🎬 <b>video (YT)</b></span>{% endif %}
+ </div>
+ {% include "partials/player.html" %}
+ {% if page.extra.video_id %}
+ <div class="video" style="display:grid">
+ <iframe src="https://www.youtube-nocookie.com/embed/{{ page.extra.video_id }}" title="Video del episodio" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+ </div>
+ <div class="co info"><div class="hd">ⓘ Info</div><div class="bd">Con vídeo de YouTube el visualizador de frecuencias se muestra <b>simulado</b>.</div></div>
+ {% endif %}
+ </div>
+ </div>
 
-      <div class="card">
-        <div class="card-hd"><h2>Temporadas</h2><span class="sub">{{ pulso.subsections | length }} temporadas</span></div>
-        <div class="card-bd seasons">
-          {% for tsp in pulso.subsections %}
-          {% set t = get_section(path=tsp) %}
-          {% if has_season %}{% set isnow = (t.path == season.path) %}{% else %}{% set isnow = false %}{% endif %}
-          <a class="season{% if isnow %} now{% endif %}" href="{{ t.permalink }}">
-            <div class="n">{{ t.title | upper }}</div>
-            <div class="e">{{ t.pages | length }} episodios</div>
-          </a>
-          {% endfor %}
-        </div>
-      </div>
-      {% endif %}
+ <div class="card">
+ <div class="card-hd"><h2>Temporadas</h2><span class="sub">{{ pulso.subsections | length }} temporadas</span></div>
+ <div class="card-bd seasons">
+ {% for tsp in pulso.subsections %}
+ {% set t = get_section(path=tsp) %}
+ {% if has_season %}{% set isnow = t.path == season.path %}{% else %}{% set isnow = false %}{% endif %}
+ <a class="season{% if isnow %} now{% endif %}" href="{{ t.permalink }}">
+ <div class="n">{{ t.title | upper }}</div>
+ <div class="e">{{ t.pages | length }} episodios</div>
+ </a>
+ {% endfor %}
+ </div>
+ </div>
+ {% endif %}
 
-      <div class="card">
-        <div class="card-hd"><h2>{% if page.extra.audio %}Show notes{% else %}{{ page.title }}{% endif %}</h2>{% if page.extra.audio %}<span class="sub">markdown completo</span>{% endif %}</div>
-        <div class="card-bd md">
-          {% if pulso.extra.boilerplate and page.extra.boilerplate %}
-          <div class="co note"><div class="hd">✎ Nota recurrente</div><div class="bd">{{ pulso.extra.boilerplate | markdown }}</div></div>
-          {% endif %}
-          {{ page.content }}
-          {% if page.extra.chapters %}
-          <h3>Marcas del audio</h3>
-            <ul class="chap" id="chapters">
-  {% for c in page.extra.chapters %}
-  {% set mmss = c.time | replace(from=":", to="_") %}
-  {% set parts = mmss | split(pat="_") %}
-  {% set m = parts[0] | int %}
-  {% set s = parts[1] | int %}
-  {% set secs = m * 60 + s %}
-  <li data-t="{{ secs }}"><span class="t">{{ c.time }}</span><span class="l">{{ c.label }}</span></li>
-  {% endfor %}
-</ul>
-          {% endif %}
-        </div>
-      </div>
+ <div class="card">
+ <div class="card-hd"><h2>{% if page.extra.audio %}Show notes{% else %}{{ page.title }}{% endif %}</h2>{% if page.extra.audio %}<span class="sub">markdown completo</span>{% endif %}</div>
+ <div class="card-bd md">
+ {% if pulso.extra.boilerplate and page.extra.boilerplate %}
+ <div class="co note"><div class="hd">✎ Nota recurrente</div><div class="bd">{{ pulso.extra.boilerplate | markdown }}</div></div>
+ {% endif %}
+ {{ page.content }}
+ {% if page.extra.chapters %}
+ <h3>Marcas del audio</h3>
+ <ul class="chap" id="chapters">
+ {% for c in page.extra.chapters %}
+ {% set mmss = c.time | replace(from=":", to="_") %}
+ {% set parts = mmss | split(pat="_") %}
+ {% set m = parts[0] | int %}
+ {% set s = parts[1] | int %}
+ {% set secs = m * 60 + s %}
+ <li data-t="{{ secs }}"><span class="t">{{ c.time }}</span><span class="l">{{ c.label }}</span></li>
+ {% endfor %}
+ </ul>
+ {% endif %}
+ </div>
+ </div>
 
-      {% if site_config.extra.giscus is defined %}
-      {% set g = site_config.extra.giscus %}
-      <div class="card"><div class="card-bd">
-        <h3 style="margin-bottom:12px">Comentarios</h3>
-        <div class="giscus" id="giscus"></div>
-        <script src="https://giscus.app/client.js"
-          data-repo="{{ g.repo }}" data-repo-id="{{ g.repo_id | default(value="") }}"
-          data-category="{{ g.category | default(value="General") }}" data-category-id="{{ g.category_id | default(value="") }}"
-          data-strict="1" data-reactions-enabled="1" data-emit-metadata="0"
-          data-input-position="top" data-theme="dark_dimmed" data-lang="es" loading="lazy" crossorigin="anonymous" async></script>
-      </div></div>
-      {% endif %}
-    </div>
-    {% include "partials/sidebar.html" %}
-  </main>
+ {% if site_config.extra.giscus is defined %}
+ {% set g = site_config.extra.giscus %}
+ <div class="card"><div class="card-bd">
+ <h3 style="margin-bottom:12px">Comentarios</h3>
+ <div class="giscus" id="giscus"></div>
+ <script src="https://giscus.app/client.js"
+ data-repo="{{ g.repo }}" data-repo-id="{{ g.repo_id | default(value="") }}"
+ data-category="{{ g.category | default(value="General") }}" data-category-id="{{ g.category_id | default(value="") }}"
+ data-strict="1" data-reactions-enabled="1" data-emit-metadata="0"
+ data-input-position="top" data-theme="dark_dimmed" data-lang="es" loading="lazy" crossorigin="anonymous" async></script>
+ </div></div>
+ {% endif %}
+ </div>
+ {% include "partials/sidebar.html" %}
+ </main>
 </div>
 {% include "partials/footer.html" %}
 {% if page.extra.audio %}<script src="/js/main.js"></script>{% endif %}
