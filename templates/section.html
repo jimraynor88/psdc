@@ -1,109 +1,111 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ section.title }} · PURO SONIDO DE CLUB</title>
-  <meta name="description" content="{{ section.description | default(value=site_config.description) }}">
-  <link rel="stylesheet" href="/css/style.css">
-  {% if section.extra.is_podcast %}<link rel="alternate" type="application/rss+xml" title="{{ section.title }}" href="{{ section.permalink }}feed.xml">{% endif %}
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>{{ section.title }} · PURO SONIDO DE CLUB</title>
+ <meta name="description" content="{{ section.description | default(value=site_config.description) }}">
+ <link rel="stylesheet" href="/css/style.css">
+ {% if section.extra.is_podcast %}<link rel="alternate" type="application/rss+xml" title="{{ section.title }}" href="{{ section.permalink }}feed.xml">{% endif %}
 </head>
 {% if section.extra.is_podcast %}
-  {% set pulso = section %}
+ {% set pulso = section %}
 {% else %}
-  {% set pulso = get_section(path=section.ancestors | last) %}
+ {% set a_last = section.ancestors | last %}
+ {% set pulso = get_section(path=a_last) %}
 {% endif %}
 <body class="v-{{ pulso.extra.visual | default(value="vinyl") }}" style="--acc:{{ pulso.extra.accent | default(value="#53c8ff") }};--acc2:{{ pulso.extra.accent2 | default(value="#2b6bff") }}">
 {% include "partials/header.html" %}
 <div class="wrap">
-  {% include "partials/switch.html" %}
-  {% if pulso.extra.is_podcast or section.extra.is_season %}
-  <section class="hero">
-    <div class="kicker">{{ pulso.extra.kicker | default(value=pulso.title) }}</div>
-    <h1><span>{{ pulso.title }}</span> <em>{{ pulso.extra.nav_sub | default(value="// archive") }}</em></h1>
-    <p>{{ pulso.description | default(value="") }}</p>
-    <div class="badges">
-      {% if pulso.extra.badge %}<span class="badge acc">{{ pulso.extra.badge | upper }}</span>{% endif %}
-      {% if pulso.extra.is_podcast %}<a class="badge" href="{{ pulso.permalink }}feed.xml">RSS ↗</a>{% endif %}
-    </div>
-  </section>
-  {% else %}
-  <section class="hero">
-    <div class="kicker">{{ section.extra.kicker | default(value="sección") }}</div>
-    <h1><span>{{ section.title }}</span></h1>
-    <p>{{ section.description | default(value="") }}</p>
-  </section>
-  {% endif %}
+ {% include "partials/switch.html" %}
+ {% if pulso.extra.is_podcast or section.extra.is_season %}
+ <section class="hero">
+ <div class="kicker">{{ pulso.extra.kicker | default(value=pulso.title) }}</div>
+ <h1><span>{{ pulso.title }}</span> <em>{{ pulso.extra.nav_sub | default(value="// archive") }}</em></h1>
+ <p>{{ pulso.description | default(value="") }}</p>
+ <div class="badges">
+ {% if pulso.extra.badge %}<span class="badge acc">{{ pulso.extra.badge | upper }}</span>{% endif %}
+ {% if pulso.extra.is_podcast %}<a class="badge" href="{{ pulso.permalink }}feed.xml">RSS ↗</a>{% endif %}
+ </div>
+ </section>
+ {% else %}
+ <section class="hero">
+ <div class="kicker">{{ section.extra.kicker | default(value="sección") }}</div>
+ <h1><span>{{ section.title }}</span></h1>
+ <p>{{ section.description | default(value="") }}</p>
+ </section>
+ {% endif %}
 
-  <main>
-    <div>
-      {% if section.extra.is_podcast %}
-      <div class="card">
-        <div class="card-hd"><h2>Temporadas</h2><span class="sub">{{ section.subsections | length }} temporadas</span></div>
-        <div class="card-bd seasons">
-          {% for tsp in section.subsections %}
-          {% set t = get_section(path=tsp) %}
-          <a class="season" href="{{ t.permalink }}">
-            <div class="n">{{ t.title | upper }}</div>
-            <div class="e">{{ t.pages | length }} episodios</div>
-          </a>
-          {% endfor %}
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-hd"><h2>Episodios</h2><span class="sub">todas las temporadas</span></div>
-        <div class="card-bd ep-list">
-          {% for tsp in section.subsections %}
-            {% set t = get_section(path=tsp) %}
-            {% for ep in t.pages | sort(attribute="date") | reverse %}
-            <a class="ep" href="{{ ep.permalink }}">
-              <span class="num">{% if ep.extra.season %}T{{ ep.extra.season }}{% endif %}{% if ep.extra.episode %}.{{ ep.extra.episode }}{% endif %}</span>
-              <span>
-                <span class="t">{{ ep.title }}</span>
-                <span class="d" style="display:block">{{ ep.date | date(format="%d %b %Y") }}{% if ep.extra.duration %} · {{ ep.extra.duration }}{% endif %}{% if ep.extra.video_id %} · 🎬{% endif %}</span>
-              </span>
-              <span class="d" style="color:var(--acc)">→</span>
-            </a>
-            {% endfor %}
-          {% endfor %}
-        </div>
-      </div>
+ <main>
+ <div>
+ {% if section.extra.is_podcast %}
+ {% if section.content %}<div class="card"><div class="card-bd md">{{ section.content }}</div></div>{% endif %}
+ <div class="card">
+ <div class="card-hd"><h2>Temporadas</h2><span class="sub">{{ section.subsections | length }} temporadas</span></div>
+ <div class="card-bd seasons">
+ {% for tsp in section.subsections %}
+ {% set t = get_section(path=tsp) %}
+ <a class="season" href="{{ t.permalink }}">
+ <div class="n">{{ t.title | upper }}</div>
+ <div class="e">{{ t.pages | length }} episodios</div>
+ </a>
+ {% endfor %}
+ </div>
+ </div>
+ <div class="card">
+ <div class="card-hd"><h2>Episodios</h2><span class="sub">todas las temporadas</span></div>
+ <div class="card-bd ep-list">
+ {% for tsp in section.subsections %}
+ {% set t = get_section(path=tsp) %}
+ {% for ep in t.pages | sort(attribute="date") | reverse %}
+ <a class="ep" href="{{ ep.permalink }}">
+ <span class="num">{% if ep.extra.season %}T{{ ep.extra.season }}{% endif %}{% if ep.extra.episode %}.{{ ep.extra.episode }}{% endif %}</span>
+ <span>
+ <span class="t">{{ ep.title }}</span>
+ <span class="d" style="display:block">{{ ep.date | date(format="%d %b %Y") }}{% if ep.extra.duration %} · {{ ep.extra.duration }}{% endif %}{% if ep.extra.video_id %} · 🎬{% endif %}</span>
+ </span>
+ <span class="d" style="color:var(--acc)">→</span>
+ </a>
+ {% endfor %}
+ {% endfor %}
+ </div>
+ </div>
 
-      {% elif section.extra.is_season %}
-      <div class="card">
-        <div class="card-hd"><h2>{{ section.title }}</h2><span class="sub">{{ section.pages | length }} episodios</span></div>
-        {% if section.content %}<div class="card-bd md">{{ section.content }}</div>{% endif %}
-        <div class="card-bd ep-list">
-          {% for ep in section.pages | sort(attribute="date") | reverse %}
-          <a class="ep" href="{{ ep.permalink }}">
-            <span class="num">{% if ep.extra.season %}T{{ ep.extra.season }}{% endif %}{% if ep.extra.episode %}.{{ ep.extra.episode }}{% endif %}</span>
-            <span>
-              <span class="t">{{ ep.title }}</span>
-              <span class="d" style="display:block">{{ ep.date | date(format="%d %b %Y") }}{% if ep.extra.duration %} · {{ ep.extra.duration }}{% endif %}{% if ep.extra.video_id %} · 🎬{% endif %}</span>
-            </span>
-            <span class="d" style="color:var(--acc)">→</span>
-          </a>
-          {% endfor %}
-        </div>
-      </div>
-      <a href="{{ pulso.permalink }}feed.xml" class="rssline">RSS de todo el podcast ↗</a>
+ {% elif section.extra.is_season %}
+ <div class="card">
+ <div class="card-hd"><h2>{{ section.title }}</h2><span class="sub">{{ section.pages | length }} episodios</span></div>
+ {% if section.content %}<div class="card-bd md">{{ section.content }}</div>{% endif %}
+ <div class="card-bd ep-list">
+ {% for ep in section.pages | sort(attribute="date") | reverse %}
+ <a class="ep" href="{{ ep.permalink }}">
+ <span class="num">{% if ep.extra.season %}T{{ ep.extra.season }}{% endif %}{% if ep.extra.episode %}.{{ ep.extra.episode }}{% endif %}</span>
+ <span>
+ <span class="t">{{ ep.title }}</span>
+ <span class="d" style="display:block">{{ ep.date | date(format="%d %b %Y") }}{% if ep.extra.duration %} · {{ ep.extra.duration }}{% endif %}{% if ep.extra.video_id %} · 🎬{% endif %}</span>
+ </span>
+ <span class="d" style="color:var(--acc)">→</span>
+ </a>
+ {% endfor %}
+ </div>
+ </div>
+ <a href="{{ pulso.permalink }}feed.xml" class="rssline">RSS de todo el podcast ↗</a>
 
-      {% else %}
-      <div class="card">
-        {% if section.content %}<div class="card-bd md">{{ section.content }}</div>{% endif %}
-        <div class="card-bd ep-list">
-          {% for p in section.pages | sort(attribute="date") | reverse %}
-          <a class="ep" href="{{ p.permalink }}">
-            <span class="num">{{ p.date | date(format="%Y-%m-%d") }}</span>
-            <span><span class="t">{{ p.title }}</span><span class="d" style="display:block">{{ p.description | default(value="") }}</span></span>
-          </a>
-          {% endfor %}
-        </div>
-      </div>
-      {% endif %}
-    </div>
-    {% include "partials/sidebar.html" %}
-  </main>
+ {% else %}
+ <div class="card">
+ {% if section.content %}<div class="card-bd md">{{ section.content }}</div>{% endif %}
+ <div class="card-bd ep-list">
+ {% for p in section.pages | sort(attribute="date") | reverse %}
+ <a class="ep" href="{{ p.permalink }}">
+ <span class="num">{{ p.date | date(format="%Y-%m-%d") }}</span>
+ <span><span class="t">{{ p.title }}</span><span class="d" style="display:block">{{ p.description | default(value="") }}</span></span>
+ </a>
+ {% endfor %}
+ </div>
+ </div>
+ {% endif %}
+ </div>
+ {% include "partials/sidebar.html" %}
+ </main>
 </div>
 {% include "partials/footer.html" %}
 </body>
